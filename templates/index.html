@@ -3,177 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 实时选股平台</title>
+    <title>📊 智能选股平台</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, sans-serif; background: #0f0f1a; color: #e0e0e0; }
-        .header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 20px; border-bottom: 1px solid #2a2a4a; }
-        .header h1 { font-size: 24px; color: #fff; }
-        .header .subtitle { color: #888; margin-top: 5px; }
+        :root {
+            --bg: #0a0a1a;
+            --card: #12122a;
+            --border: #1e1e3a;
+            --text: #e0e0e0;
+            --text2: #888;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --red: #ef4444;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --blue: #3b82f6;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
         
-        .status-bar { display: flex; gap: 20px; padding: 15px 20px; background: #1a1a2e; border-bottom: 1px solid #2a2a4a; }
-        .status-item { display: flex; align-items: center; gap: 8px; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .status-dot.active { background: #4ade80; animation: pulse 2s infinite; }
-        .status-dot.idle { background: #666; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        #app { max-width: 1200px; margin: 0 auto; padding: 20px; }
         
-        .controls { padding: 15px 20px; display: flex; gap: 10px; align-items: center; }
-        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
-        .btn-primary { background: #3b82f6; color: #fff; }
-        .btn-primary:hover { background: #2563eb; }
-        .btn-secondary { background: #333; color: #fff; }
-        .btn-secondary:hover { background: #444; }
-        .filter-select { background: #1a1a2e; color: #fff; border: 1px solid #333; padding: 8px 12px; border-radius: 6px; }
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .header h1 { font-size: 24px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-right { display: flex; gap: 12px; align-items: center; }
         
-        .signals { padding: 10px 20px; }
-        .signal-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 15px; margin-bottom: 12px; }
-        .signal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .signal-stock { font-size: 18px; font-weight: bold; }
-        .signal-price { font-size: 16px; }
-        .signal-up { color: #ef4444; }
-        .signal-down { color: #22c55e; }
-        .signal-meta { display: flex; gap: 15px; margin-top: 10px; }
-        .signal-tag { background: #2a2a4a; padding: 4px 10px; border-radius: 4px; font-size: 12px; }
-        .signal-reason { color: #999; font-size: 13px; margin-top: 8px; }
-        .signal-score { display: flex; align-items: center; gap: 8px; }
-        .score-bar { flex: 1; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
-        .score-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 3px; }
+        /* Status Card */
+        .status-bar { display: flex; gap: 16px; margin-bottom: 24px; }
+        .status-item { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+        .status-item .value { font-size: 28px; font-weight: bold; margin: 8px 0 4px; }
+        .status-item .label { font-size: 12px; color: var(--text2); }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .status-dot.active { background: var(--green); animation: pulse 2s infinite; }
+        .status-dot.idle { background: var(--text2); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         
-        .loading { text-align: center; padding: 40px; color: #666; }
-        .empty { text-align: center; padding: 60px; color: #666; }
-        .empty-icon { font-size: 48px; margin-bottom: 10px; }
+        /* Tabs */
+        .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--card); border-radius: 10px; padding: 4px; }
+        .tab { flex: 1; padding: 10px; text-align: center; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+        .tab:hover { background: rgba(255,255,255,0.05); }
+        .tab.active { background: var(--primary); color: white; }
+        
+        /* Signal Card */
+        .signal-list { display: flex; flex-direction: column; gap: 12px; }
+        .signal-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; transition: all 0.2s; cursor: pointer; }
+        .signal-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .signal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .signal-stock { display: flex; align-items: center; gap: 10px; }
+        .signal-stock .code { font-size: 18px; font-weight: 600; }
+        .signal-stock .name { color: var(--text2); font-size: 14px; }
+        .signal-price { text-align: right; }
+        .signal-price .price { font-size: 20px; font-weight: 600; }
+        .signal-price .change { font-size: 14px; font-weight: 500; }
+        .up { color: var(--red); }
+        .down { color: var(--green); }
+        .signal-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+        .signal-tag { background: rgba(79, 70, 229, 0.2); color: #a5b4fc; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+        .signal-reason { color: var(--text2); font-size: 13px; line-height: 1.5; }
+        .signal-score { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+        .score-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .score-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
+        .score-text { font-size: 12px; color: var(--text2); min-width: 50px; text-align: right; }
+        
+        /* Strategy Panel */
+        .strategy-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .strategy-card h3 { font-size: 16px; margin-bottom: 12px; }
+        .strategy-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .strategy-row:last-child { border-bottom: none; }
+        .strategy-info { flex: 1; }
+        .strategy-name { font-weight: 500; }
+        .strategy-desc { font-size: 12px; color: var(--text2); margin-top: 4px; }
+        
+        /* Toggle */
+        .toggle { position: relative; width: 44px; height: 24px; background: var(--border); border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .toggle.active { background: var(--primary); }
+        .toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: all 0.2s; }
+        .toggle.active::after { left: 22px; }
+        
+        /* Buttons */
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        
+        /* Filter */
+        .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+        .filter-bar select { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 14px; }
+        .filter-bar input { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 14px; width: 120px; }
+        
+        /* Empty State */
+        .empty { text-align: center; padding: 60px 20px; color: var(--text2); }
+        .empty-icon { font-size: 48px; margin-bottom: 12px; }
+        
+        /* Loading */
+        .loading { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 40px; color: var(--text2); }
+        .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Config Panel */
+        .config-section { margin-bottom: 20px; }
+        .config-section h3 { font-size: 14px; color: var(--text2); margin-bottom: 12px; }
+        .config-row { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+        .config-row label { min-width: 100px; font-size: 13px; }
+        .config-row input { background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 13px; width: 100px; }
+        
+        /* Custom Strategy */
+        .custom-strategy { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+        .custom-strategy h4 { font-size: 14px; margin-bottom: 10px; }
+        .condition-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+        .condition-item { font-size: 12px; color: var(--text2); padding: 6px 10px; background: rgba(255,255,255,0.03); border-radius: 6px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📊 实时选股平台</h1>
-        <div class="subtitle">策略扫描 · 实时信号 · 东方财富数据</div>
-    </div>
-    
-    <div class="status-bar">
-        <div class="status-item">
-            <div class="status-dot" id="statusDot"></div>
-            <span id="statusText">连接中...</span>
+    <div id="app">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 智能选股平台</h1>
+            <div class="header-right">
+                <span style="font-size: 13px; color: var(--text2);">
+                    <span class="status-dot" :class="status.scanning ? 'active' : 'idle'"></span>
+                    {{ status.scanning ? '扫描中...' : '就绪' }}
+                </span>
+                <button class="btn btn-primary" @click="triggerScan" :disabled="status.scanning">
+                    {{ status.scanning ? '扫描中...' : '🔄 扫描' }}
+                </button>
+            </div>
         </div>
-        <div class="status-item">
-            📈 已扫描: <span id="scannedCount">0</span> 只
-        </div>
-        <div class="status-item">
-            🔔 信号: <span id="signalCount">0</span> 个
-        </div>
-        <div class="status-item">
-            🕐 上次: <span id="lastScan">-</span>
-        </div>
-    </div>
-    
-    <div class="controls">
-        <button class="btn btn-primary" onclick="triggerScan()">🔄 手动扫描</button>
-        <select class="filter-select" id="strategyFilter" onchange="loadSignals()">
-            <option value="">全部策略</option>
-        </select>
-    </div>
-    
-    <div class="signals" id="signalsContainer">
-        <div class="loading">加载中...</div>
-    </div>
-    
-    <script>
-        let autoRefresh = true;
         
-        function formatScore(score) {
-            const filled = Math.round(score / 10);
-            return '█'.repeat(filled) + '░'.repeat(10 - filled);
-        }
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="label">扫描进度</div>
+                <div class="value">{{ status.total_scanned || 0 }}</div>
+                <div class="label">/ {{ totalStocks }} 只</div>
+            </div>
+            <div class="status-item">
+                <div class="label">发现信号</div>
+                <div class="value up">{{ signals.length }}</div>
+                <div class="label">符合条件</div>
+            </div>
+            <div class="status-item">
+                <div class="label">上次扫描</div>
+                <div class="value" style="font-size: 16px;">{{ status.last_scan || '未扫描' }}</div>
+            </div>
+        </div>
         
-        function renderSignals(signals) {
-            const container = document.getElementById('signalsContainer');
-            if (!signals.length) {
-                container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>暂无信号</div>';
-                return;
-            }
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab" :class="activeTab === 'signals' ? 'active' : ''" @click="activeTab = 'signals'">📡 选股信号</div>
+            <div class="tab" :class="activeTab === 'strategies' ? 'active' : ''" @click="activeTab = 'strategies'">⚙️ 策略管理</div>
+            <div class="tab" :class="activeTab === 'settings' ? 'active' : ''" @click="activeTab = 'settings'">🔧 参数设置</div>
+        </div>
+        
+        <!-- Signals Tab -->
+        <div v-if="activeTab === 'signals'">
+            <!-- Filters -->
+            <div class="filter-bar">
+                <select v-model="filterStrategy">
+                    <option value="">全部策略</option>
+                    <option v-for="s in strategyNames" :key="s" :value="s">{{ s }}</option>
+                </select>
+                <input type="text" v-model="filterCode" placeholder="输入代码搜索">
+                <span style="font-size: 12px; color: var(--text2);">评分 ≥ </span>
+                <input type="number" v-model.number="filterMinScore" style="width: 60px;" min="0" max="100">
+            </div>
             
-            container.innerHTML = signals.map(sig => `
-                <div class="signal-card">
+            <!-- Signal List -->
+            <div class="signal-list" v-if="filteredSignals.length">
+                <div class="signal-card" v-for="sig in filteredSignals" :key="sig.code + sig.strategy">
                     <div class="signal-header">
-                        <div>
-                            <span class="signal-stock">${sig.code} ${sig.name || ''}</span>
+                        <div class="signal-stock">
+                            <span class="code">{{ sig.code }}</span>
+                            <span class="name">{{ sig.name || '-' }}</span>
                         </div>
-                        <div class="signal-price ${sig.change_pct >= 0 ? 'signal-up' : 'signal-down'}">
-                            ${sig.price}元 ${sig.change_pct >= 0 ? '+' : ''}${sig.change_pct}%
+                        <div class="signal-price">
+                            <div class="price" :class="sig.change_pct >= 0 ? 'up' : 'down'">
+                                {{ sig.price?.toFixed(2) || '-' }}
+                            </div>
+                            <div class="change" :class="sig.change_pct >= 0 ? 'up' : 'down'">
+                                {{ sig.change_pct >= 0 ? '+' : '' }}{{ sig.change_pct }}%
+                            </div>
                         </div>
                     </div>
                     <div class="signal-meta">
-                        <span class="signal-tag">${sig.strategy}</span>
-                        <div class="signal-score">
-                            信号: [${formatScore(sig.score)}] ${sig.score}分
-                        </div>
+                        <span class="signal-tag">{{ sig.strategy }}</span>
                     </div>
-                    <div class="signal-reason">💡 ${sig.reason}</div>
+                    <div class="signal-reason">💡 {{ sig.reason }}</div>
+                    <div class="signal-score">
+                        <div class="score-bar">
+                            <div class="score-fill" :style="{width: sig.score + '%', background: getScoreColor(sig.score)}"></div>
+                        </div>
+                        <span class="score-text">{{ sig.score }}分</span>
+                    </div>
                 </div>
-            `).join('');
-        }
+            </div>
+            
+            <!-- Loading -->
+            <div class="loading" v-else-if="status.scanning">
+                <div class="spinner"></div>
+                <span>正在扫描 {{ status.total_scanned || 0 }} / {{ totalStocks }}...</span>
+            </div>
+            
+            <!-- Empty -->
+            <div class="empty" v-else>
+                <div class="empty-icon">📭</div>
+                <div>暂无信号</div>
+                <div style="font-size: 13px; margin-top: 8px;">点击右上角"扫描"开始选股</div>
+            </div>
+        </div>
         
-        async function loadSignals() {
-            const strategy = document.getElementById('strategyFilter').value;
-            try {
-                const resp = await fetch(`/api/signals?strategy=${strategy}`);
-                const data = await resp.json();
-                renderSignals(data.data);
-                document.getElementById('signalCount').textContent = data.total;
-            } catch (e) {
-                console.error('加载失败', e);
-            }
-        }
+        <!-- Strategies Tab -->
+        <div v-if="activeTab === 'strategies'">
+            <div class="strategy-card">
+                <h3>📋 预设策略</h3>
+                <div class="strategy-row" v-for="(enabled, key) in config.strategies" :key="key">
+                    <div class="strategy-info">
+                        <div class="strategy-name">{{ strategyNamesMap[key] || key }}</div>
+                        <div class="strategy-desc">{{ strategyDescs[key] || '' }}</div>
+                    </div>
+                    <div class="toggle" :class="enabled.enabled ? 'active' : ''" @click="toggleStrategy(key)"></div>
+                </div>
+            </div>
+            
+            <div class="strategy-card">
+                <h3>🎯 自定义策略</h3>
+                <div v-for="(cs, idx) in config.custom_strategies" :key="idx" class="custom-strategy">
+                    <h4>{{ cs.name }} <span style="font-size: 12px; color: var(--text2);">- {{ cs.description }}</span></h4>
+                    <div class="condition-grid">
+                        <div class="condition-item" v-if="cs.conditions.change_pct_min">涨幅 ≥ {{ cs.conditions.change_pct_min }}%</div>
+                        <div class="condition-item" v-if="cs.conditions.change_pct_max">涨幅 ≤ {{ cs.conditions.change_pct_max }}%</div>
+                        <div class="condition-item" v-if="cs.conditions.volume_ratio_min">量比 ≥ {{ cs.conditions.volume_ratio_min }}</div>
+                        <div class="condition-item" v-if="cs.conditions.turnover_min">换手率 ≥ {{ cs.conditions.turnover_min }}%</div>
+                        <div class="condition-item" v-if="cs.conditions.above_ma20">在20日均线上方</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        async function loadStrategies() {
-            try {
-                const resp = await fetch('/api/strategies');
-                const data = await resp.json();
-                const select = document.getElementById('strategyFilter');
-                data.strategies.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s;
-                    opt.textContent = s;
-                    select.appendChild(opt);
+        <!-- Settings Tab -->
+        <div v-if="activeTab === 'settings'">
+            <div class="strategy-card">
+                <h3>⏱️ 扫描设置</h3>
+                <div class="config-row">
+                    <label>扫描间隔</label>
+                    <input type="number" v-model.number="config.scan_interval" @change="saveConfig"> 秒
+                </div>
+                <div class="config-row">
+                    <label>信号阈值</label>
+                    <input type="number" v-model.number="config.notify.min_score" @change="saveConfig"> 分
+                </div>
+            </div>
+            
+            <div class="strategy-card">
+                <h3>🔽 股票过滤</h3>
+                <div class="config-row">
+                    <label>最低价格</label>
+                    <input type="number" v-model.number="config.filters.min_price" @change="saveConfig"> 元
+                </div>
+                <div class="config-row">
+                    <label>最高价格</label>
+                    <input type="number" v-model.number="config.filters.max_price" @change="saveConfig"> 元
+                </div>
+                <div class="config-row">
+                    <label>最小市值</label>
+                    <input type="number" v-model.number="config.filters.min_market_cap" @change="saveConfig"> 亿
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const { createApp, ref, computed, onMounted, watch } = Vue;
+    
+    createApp({
+        setup() {
+            const activeTab = ref('signals');
+            const status = ref({ scanning: false, last_scan: '', total_scanned: 0, signal_count: 0 });
+            const signals = ref([]);
+            const strategyNames = ref([]);
+            const config = ref({
+                scan_interval: 300,
+                strategies: {},
+                custom_strategies: [],
+                filters: { min_price: 3, max_price: 100, min_market_cap: 30, exclude_st: true },
+                notify: { min_score: 60 }
+            });
+            
+            const filterStrategy = ref('');
+            const filterCode = ref('');
+            const filterMinScore = ref(0);
+            const totalStocks = ref(5000);
+            
+            const strategyNamesMap = {
+                'ma_bullish': '均线多头排列',
+                'volume_break': '放量突破',
+                'pullback': '缩量回踩',
+                'limit_up': '涨停板战法',
+                'momentum': '涨幅榜情绪'
+            };
+            
+            const strategyDescs = {
+                'ma_bullish': '5/10/20/60日均线多头排列，股价站上5日线',
+                'volume_break': '量比>2，涨幅>3%，成交量创近5日新高',
+                'pullback': '缩量回踩20日均线，成交量萎缩至前5日均量的50%以下',
+                'limit_up': '今日涨停，近5日涨幅<30%，非ST股',
+                'momentum': '涨幅>5%，量比>1.5，换手率>5%'
+            };
+            
+            const filteredSignals = computed(() => {
+                return signals.value.filter(sig => {
+                    if (filterStrategy.value && sig.strategy !== filterStrategy.value) return false;
+                    if (filterCode.value && !sig.code.includes(filterCode.value)) return false;
+                    if (sig.score < filterMinScore.value) return false;
+                    return true;
                 });
-            } catch (e) {}
-        }
-        
-        async function loadStatus() {
-            try {
-                const resp = await fetch('/api/status');
-                const data = await resp.json();
+            });
+            
+            const getScoreColor = (score) => {
+                if (score >= 80) return '#ef4444';
+                if (score >= 60) return '#f59e0b';
+                return '#3b82f6';
+            };
+            
+            const fetchStatus = async () => {
+                try {
+                    const { data } = await axios.get('/api/status');
+                    status.value = data;
+                } catch (e) {}
+            };
+            
+            const fetchSignals = async () => {
+                try {
+                    const { data } = await axios.get('/api/signals?size=200');
+                    signals.value = data.data || [];
+                    strategyNames.value = [...new Set(signals.value.map(s => s.strategy))];
+                } catch (e) {}
+            };
+            
+            const fetchConfig = async () => {
+                try {
+                    const { data } = await axios.get('/api/config');
+                    config.value = data;
+                } catch (e) {}
+            };
+            
+            const triggerScan = async () => {
+                try {
+                    await axios.post('/api/scan');
+                    setTimeout(pollScanStatus, 2000);
+                } catch (e) {}
+            };
+            
+            const pollScanStatus = async () => {
+                await fetchStatus();
+                await fetchSignals();
+                if (status.value.scanning) {
+                    setTimeout(pollScanStatus, 3000);
+                }
+            };
+            
+            const toggleStrategy = (key) => {
+                config.value.strategies[key].enabled = !config.value.strategies[key].enabled;
+                saveConfig();
+            };
+            
+            const saveConfig = async () => {
+                try {
+                    await axios.post('/api/config', config.value);
+                } catch (e) {
+                    console.error('保存失败', e);
+                }
+            };
+            
+            onMounted(() => {
+                fetchStatus();
+                fetchSignals();
+                fetchConfig();
                 
-                document.getElementById('statusDot').className = 
-                    'status-dot ' + (data.scanning ? 'active' : 'idle');
-                document.getElementById('statusText').textContent = 
-                    data.scanning ? '扫描中...' : '就绪';
-                document.getElementById('scannedCount').textContent = data.total_scanned;
-                document.getElementById('signalCount').textContent = data.signal_count;
-                document.getElementById('lastScan').textContent = data.last_scan || '-';
-            } catch (e) {}
+                // Auto refresh
+                setInterval(async () => {
+                    await fetchStatus();
+                    await fetchSignals();
+                }, 15000);
+            });
+            
+            return {
+                activeTab, status, signals, config, strategyNames, strategyNamesMap, strategyDescs,
+                filterStrategy, filterCode, filterMinScore, filteredSignals, totalStocks,
+                getScoreColor, triggerScan, toggleStrategy, saveConfig
+            };
         }
-        
-        async function triggerScan() {
-            try {
-                await fetch('/api/scan', { method: 'POST' });
-                setTimeout(loadStatus, 1000);
-            } catch (e) {}
-        }
-        
-        // 初始化
-        loadStrategies();
-        loadSignals();
-        loadStatus();
-        
-        // 自动刷新
-        setInterval(() => {
-            if (autoRefresh) {
-                loadStatus();
-                loadSignals();
-            }
-        }, 15000);
+    }).mount('#app');
     </script>
 </body>
 </html>
