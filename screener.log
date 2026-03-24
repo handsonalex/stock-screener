@@ -1,0 +1,18 @@
+配置已加载: 5 个策略
+已加载 6 个策略: ['均线多头排列', '放量突破', '缩量回踩', '涨停板战法', '涨幅榜情绪', '我的强势股策略']
+
+==================================================
+开始扫描: 2026-03-24 19:11:45
+==================================================
+获取股票列表...
+扫描出错: name 'BASE_URL' is not defined
+
+下次扫描: 300秒后
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m

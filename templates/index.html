@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 实时选股平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: #0f0f1a; color: #e0e0e0; }
+        .header { background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 20px; border-bottom: 1px solid #2a2a4a; }
+        .header h1 { font-size: 24px; color: #fff; }
+        .header .subtitle { color: #888; margin-top: 5px; }
+        
+        .status-bar { display: flex; gap: 20px; padding: 15px 20px; background: #1a1a2e; border-bottom: 1px solid #2a2a4a; }
+        .status-item { display: flex; align-items: center; gap: 8px; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .status-dot.active { background: #4ade80; animation: pulse 2s infinite; }
+        .status-dot.idle { background: #666; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .controls { padding: 15px 20px; display: flex; gap: 10px; align-items: center; }
+        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #3b82f6; color: #fff; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-secondary { background: #333; color: #fff; }
+        .btn-secondary:hover { background: #444; }
+        .filter-select { background: #1a1a2e; color: #fff; border: 1px solid #333; padding: 8px 12px; border-radius: 6px; }
+        
+        .signals { padding: 10px 20px; }
+        .signal-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 15px; margin-bottom: 12px; }
+        .signal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .signal-stock { font-size: 18px; font-weight: bold; }
+        .signal-price { font-size: 16px; }
+        .signal-up { color: #ef4444; }
+        .signal-down { color: #22c55e; }
+        .signal-meta { display: flex; gap: 15px; margin-top: 10px; }
+        .signal-tag { background: #2a2a4a; padding: 4px 10px; border-radius: 4px; font-size: 12px; }
+        .signal-reason { color: #999; font-size: 13px; margin-top: 8px; }
+        .signal-score { display: flex; align-items: center; gap: 8px; }
+        .score-bar { flex: 1; height: 6px; background: #333; border-radius: 3px; overflow: hidden; }
+        .score-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 3px; }
+        
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .empty { text-align: center; padding: 60px; color: #666; }
+        .empty-icon { font-size: 48px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 实时选股平台</h1>
+        <div class="subtitle">策略扫描 · 实时信号 · 东方财富数据</div>
+    </div>
+    
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">连接中...</span>
+        </div>
+        <div class="status-item">
+            📈 已扫描: <span id="scannedCount">0</span> 只
+        </div>
+        <div class="status-item">
+            🔔 信号: <span id="signalCount">0</span> 个
+        </div>
+        <div class="status-item">
+            🕐 上次: <span id="lastScan">-</span>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn btn-primary" onclick="triggerScan()">🔄 手动扫描</button>
+        <select class="filter-select" id="strategyFilter" onchange="loadSignals()">
+            <option value="">全部策略</option>
+        </select>
+    </div>
+    
+    <div class="signals" id="signalsContainer">
+        <div class="loading">加载中...</div>
+    </div>
+    
+    <script>
+        let autoRefresh = true;
+        
+        function formatScore(score) {
+            const filled = Math.round(score / 10);
+            return '█'.repeat(filled) + '░'.repeat(10 - filled);
+        }
+        
+        function renderSignals(signals) {
+            const container = document.getElementById('signalsContainer');
+            if (!signals.length) {
+                container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>暂无信号</div>';
+                return;
+            }
+            
+            container.innerHTML = signals.map(sig => `
+                <div class="signal-card">
+                    <div class="signal-header">
+                        <div>
+                            <span class="signal-stock">${sig.code} ${sig.name || ''}</span>
+                        </div>
+                        <div class="signal-price ${sig.change_pct >= 0 ? 'signal-up' : 'signal-down'}">
+                            ${sig.price}元 ${sig.change_pct >= 0 ? '+' : ''}${sig.change_pct}%
+                        </div>
+                    </div>
+                    <div class="signal-meta">
+                        <span class="signal-tag">${sig.strategy}</span>
+                        <div class="signal-score">
+                            信号: [${formatScore(sig.score)}] ${sig.score}分
+                        </div>
+                    </div>
+                    <div class="signal-reason">💡 ${sig.reason}</div>
+                </div>
+            `).join('');
+        }
+        
+        async function loadSignals() {
+            const strategy = document.getElementById('strategyFilter').value;
+            try {
+                const resp = await fetch(`/api/signals?strategy=${strategy}`);
+                const data = await resp.json();
+                renderSignals(data.data);
+                document.getElementById('signalCount').textContent = data.total;
+            } catch (e) {
+                console.error('加载失败', e);
+            }
+        }
+        
+        async function loadStrategies() {
+            try {
+                const resp = await fetch('/api/strategies');
+                const data = await resp.json();
+                const select = document.getElementById('strategyFilter');
+                data.strategies.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s;
+                    opt.textContent = s;
+                    select.appendChild(opt);
+                });
+            } catch (e) {}
+        }
+        
+        async function loadStatus() {
+            try {
+                const resp = await fetch('/api/status');
+                const data = await resp.json();
+                
+                document.getElementById('statusDot').className = 
+                    'status-dot ' + (data.scanning ? 'active' : 'idle');
+                document.getElementById('statusText').textContent = 
+                    data.scanning ? '扫描中...' : '就绪';
+                document.getElementById('scannedCount').textContent = data.total_scanned;
+                document.getElementById('signalCount').textContent = data.signal_count;
+                document.getElementById('lastScan').textContent = data.last_scan || '-';
+            } catch (e) {}
+        }
+        
+        async function triggerScan() {
+            try {
+                await fetch('/api/scan', { method: 'POST' });
+                setTimeout(loadStatus, 1000);
+            } catch (e) {}
+        }
+        
+        // 初始化
+        loadStrategies();
+        loadSignals();
+        loadStatus();
+        
+        // 自动刷新
+        setInterval(() => {
+            if (autoRefresh) {
+                loadStatus();
+                loadSignals();
+            }
+        }, 15000);
+    </script>
+</body>
+</html>
