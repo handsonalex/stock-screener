@@ -9,7 +9,8 @@ from threading import Lock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_file
+import os
 from screener import state, load_config, init_strategies, scan_market, start_background_scan
 
 app = Flask(__name__)
@@ -18,7 +19,7 @@ app_lock = Lock()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return send_file(os.path.join(os.path.dirname(__file__), "templates", "index.html"))
 
 
 @app.route("/api/status")
