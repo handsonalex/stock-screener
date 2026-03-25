@@ -1,43 +1,49 @@
 {
-    "scan_interval": 300,
-    "strategies": {
-        "ma_bullish": {
-            "enabled": true
-        },
-        "volume_break": {
-            "enabled": true
-        },
-        "pullback": {
-            "enabled": true
-        },
-        "limit_up": {
-            "enabled": true
-        },
-        "momentum": {
-            "enabled": true
-        }
-    },
-    "custom_strategies": [
-        {
-            "name": "我的强势股策略",
-            "description": "涨幅适中+放量+在均线上方",
-            "conditions": {
-                "change_pct_min": 3,
-                "change_pct_max": 8,
-                "volume_ratio_min": 1.5,
-                "turnover_min": 3,
-                "above_ma20": true
-            }
-        }
-    ],
-    "filters": {
-        "min_price": 3,
-        "max_price": 100,
-        "min_market_cap": 30,
-        "exclude_st": true,
-        "exclude_new": true
-    },
-    "notify": {
-        "min_score": 60
+  "custom_strategies": [
+    {
+      "conditions": {
+        "above_ma20": true,
+        "change_pct_max": 10,
+        "change_pct_min": 2,
+        "volume_ratio_min": 1.5
+      },
+      "description": "涨幅适中+放量+在均线上方",
+      "enabled": false,
+      "name": "我的强势股策略"
     }
+  ],
+  "filters": {
+    "exclude_new": true,
+    "exclude_st": true,
+    "max_price": 100,
+    "min_market_cap": 30,
+    "min_price": 3,
+    "mainboard_only": true,
+    "exclude_gem": true,
+    "exclude_star": true
+  },
+  "notify": {
+    "min_score": 35
+  },
+  "scan_interval": 300,
+  "strategies": {
+    "limit_up": {
+      "enabled": true
+    },
+    "limit_up_today": {
+      "enabled": true
+    },
+    "ma_bullish": {
+      "enabled": true
+    },
+    "momentum": {
+      "enabled": true
+    },
+    "pullback": {
+      "enabled": true
+    },
+    "volume_break": {
+      "enabled": true
+    }
+  }
 }

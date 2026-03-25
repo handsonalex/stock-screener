@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📊 智能选股平台</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+    <script src="/static/js/echarts.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -114,12 +115,29 @@
         /* Custom Strategy */
         .custom-strategy { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
         .custom-strategy h4 { font-size: 14px; margin-bottom: 10px; }
-        .condition-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+        .condition-grid { display: grid; grid-template-columns: 120px 1fr; gap: 8px; align-items: center; }
         .condition-item { font-size: 12px; color: var(--text2); padding: 6px 10px; background: rgba(255,255,255,0.03); border-radius: 6px; }
+        .config-input { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; border-radius: 6px; font-size: 13px; }
     </style>
 </head>
 <body>
     <div id="app">
+        <!-- 登录页面 -->
+        <div v-if="!isAuthed" style="display:flex;justify-content:center;align-items:center;min-height:100vh;">
+            <div style="background:var(--card);padding:40px 32px;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.15);text-align:center;width:360px;">
+                <div style="font-size:48px;margin-bottom:8px;">📊</div>
+                <h2 style="margin-bottom:6px;font-size:22px;">智能选股平台</h2>
+                <p style="color:var(--text2);font-size:13px;margin-bottom:24px;">输入访问密码进入</p>
+                <div class="err" v-if="loginError" style="color:var(--red);margin-bottom:12px;font-size:13px;">{{ loginError }}</div>
+                <input type="password" v-model="loginPassword" placeholder="访问密码" autofocus
+                    style="width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:12px;font-size:16px;background:var(--bg);color:var(--text);outline:none;"
+                    @keyup.enter="doLogin">
+                <button class="btn btn-primary" style="width:100%;margin-top:16px;padding:12px;font-size:16px;" @click="doLogin">登 录</button>
+            </div>
+        </div>
+
+        <!-- 主内容（登录后显示） -->
+        <div v-if="isAuthed">
         <!-- Header -->
         <div class="header">
             <h1>📊 智能选股平台</h1>
@@ -129,7 +147,7 @@
                     {{ status.scanning ? '扫描中...' : '就绪' }}
                 </span>
                 <button class="btn btn-primary" @click="triggerScan" :disabled="status.scanning">
-                    {{ status.scanning ? '扫描中...' : '🔄 扫描' }}
+                    {{ status.scanning ? '生成中...' : '⚡ 生成信号' }}
                 </button>
             </div>
         </div>
@@ -137,24 +155,27 @@
         <!-- Status Bar -->
         <div class="status-bar">
             <div class="status-item">
-                <div class="label">扫描进度</div>
-                <div class="value">{{ status.total_scanned || 0 }}</div>
-                <div class="label">/ {{ totalStocks }} 只</div>
+                <div class="label">数据日期</div>
+                <div class="value" style="font-size: 20px;">{{ status.trade_date || '-' }}</div>
+                <div class="label">最新交易日</div>
             </div>
             <div class="status-item">
-                <div class="label">发现信号</div>
+                <div class="label">选股信号</div>
                 <div class="value up">{{ signals.length }}</div>
                 <div class="label">符合条件</div>
             </div>
             <div class="status-item">
-                <div class="label">上次扫描</div>
-                <div class="value" style="font-size: 16px;">{{ status.last_scan || '未扫描' }}</div>
+                <div class="label">数据来源</div>
+                <div class="value" style="font-size: 16px; color: var(--green);">📊 数据库</div>
+                <div class="label">秒出结果</div>
             </div>
         </div>
         
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab" :class="activeTab === 'signals' ? 'active' : ''" @click="activeTab = 'signals'">📡 选股信号</div>
+            <div class="tab" :class="activeTab === 'daily' ? 'active' : ''" @click="activeTab = 'daily'">📈 每日行情</div>
+            <div class="tab" :class="activeTab === 'kline' ? 'active' : ''" @click="activeTab = 'kline'">📊 K线图</div>
             <div class="tab" :class="activeTab === 'strategies' ? 'active' : ''" @click="activeTab = 'strategies'">⚙️ 策略管理</div>
             <div class="tab" :class="activeTab === 'settings' ? 'active' : ''" @click="activeTab = 'settings'">🔧 参数设置</div>
         </div>
@@ -163,22 +184,31 @@
         <div v-if="activeTab === 'signals'">
             <!-- Filters -->
             <div class="filter-bar">
-                <select v-model="filterStrategy">
+                <select v-model="filterStrategy" @change="fetchSignals">
                     <option value="">全部策略</option>
-                    <option v-for="s in strategyNames" :key="s" :value="s">{{ s }}</option>
+                    <option value="涨幅榜">涨幅榜</option>
+                    <option value="涨停板战法">涨停板战法</option>
+                    <option value="放量突破">放量突破</option>
+                    <option value="高换手">高换手</option>
+                    <option value="连板股">连板股</option>
+                    <option value="均线多头">均线多头</option>
+                    <option value="缩量回踩">缩量回踩</option>
                 </select>
-                <input type="text" v-model="filterCode" placeholder="输入代码搜索">
-                <span style="font-size: 12px; color: var(--text2);">评分 ≥ </span>
-                <input type="number" v-model.number="filterMinScore" style="width: 60px;" min="0" max="100">
+                <input type="text" v-model="filterCode" placeholder="代码搜索" @input="debounceFetchSignals">
+                <input type="text" v-model="filterName" placeholder="名称搜索" @input="debounceFetchSignals">
+                <span style="font-size: 12px; color: var(--text2);">日期</span>
+                <input type="date" v-model="filterDate" @change="fetchSignals" style="width: 140px; background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px; border-radius: 8px;">
+                <span style="font-size: 12px; color: var(--text2);">最低分</span>
+                <input type="number" v-model.number="filterMinScore" style="width: 60px;" min="0" max="100" @change="fetchSignals">
             </div>
             
             <!-- Signal List -->
             <div class="signal-list" v-if="filteredSignals.length">
-                <div class="signal-card" v-for="sig in filteredSignals" :key="sig.code + sig.strategy">
+                <div class="signal-card" v-for="sig in filteredSignals" :key="sig.stock_code + sig.strategy">
                     <div class="signal-header">
                         <div class="signal-stock">
-                            <span class="code">{{ sig.code }}</span>
-                            <span class="name">{{ sig.name || '-' }}</span>
+                            <span class="code" style="cursor:pointer;text-decoration:underline;" @click="showKline(sig.stock_code)">{{ sig.stock_code }}</span>
+                            <span class="name">{{ sig.stock_name || '-' }}</span>
                         </div>
                         <div class="signal-price">
                             <div class="price" :class="sig.change_pct >= 0 ? 'up' : 'down'">
@@ -216,6 +246,124 @@
             </div>
         </div>
         
+        <!-- Daily Market Tab -->
+        <div v-if="activeTab === 'daily'">
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <input type="date" v-model="dailyDate" style="background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px;">
+                    <select v-model="dailySort" style="background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px;">
+                        <option value="change_pct">涨幅</option>
+                        <option value="change_pct_asc">跌幅</option>
+                        <option value="volume">成交量</option>
+                        <option value="amount">成交额</option>
+                        <option value="turnover_rate">换手率</option>
+                        <option value="amplitude">振幅</option>
+                        <option value="volume_ratio">量比</option>
+                    </select>
+                    <input type="number" v-model.number="dailyN" min="10" max="500" style="width: 70px; background: var(--card); color: var(--text); border: 1px solid var(--border); padding: 8px; border-radius: 8px;" placeholder="条数">
+                    <button class="btn btn-primary" @click="fetchDailyData">查询</button>
+                </div>
+                
+                <!-- Summary -->
+                <div class="status-bar" v-if="dailySummary">
+                    <div class="status-item">
+                        <div class="label">上涨</div>
+                        <div class="value up">{{ dailySummary.up_cnt || 0 }}</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="label">下跌</div>
+                        <div class="value down">{{ dailySummary.down_cnt || 0 }}</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="label">涨停</div>
+                        <div class="value" style="color: var(--red);">{{ dailySummary.limit_up_cnt || 0 }}</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="label">平均涨幅</div>
+                        <div class="value">{{ dailySummary.avg_change }}%</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="label">成交额</div>
+                        <div class="value">{{ dailySummary.total_amount_yi }}亿</div>
+                    </div>
+                </div>
+                
+                <!-- Data Table -->
+                <div class="strategy-card" style="overflow-x: auto;" v-if="dailyRows.length">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border);">
+                                <th style="padding: 10px 8px; text-align: left;">代码</th>
+                                <th style="padding: 10px 8px; text-align: left;">名称</th>
+                                <th style="padding: 10px 8px; text-align: right;">现价</th>
+                                <th style="padding: 10px 8px; text-align: right;">涨跌幅%</th>
+                                <th style="padding: 10px 8px; text-align: right;">成交量(万手)</th>
+                                <th style="padding: 10px 8px; text-align: right;">成交额(万)</th>
+                                <th style="padding: 10px 8px; text-align: right;">换手率%</th>
+                                <th style="padding: 10px 8px; text-align: right;">量比</th>
+                                <th style="padding: 10px 8px; text-align: center;">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="r in dailyRows" :key="r.stock_code" 
+                                :style="r.is_limit_up ? 'background: rgba(239,68,68,0.1);' : ''"
+                                style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 8px;"><span style="cursor:pointer;text-decoration:underline;" @click="showKline(r.stock_code)">{{ r.stock_code }}</span></td>
+                                <td style="padding: 8px;">{{ r.stock_name }}</td>
+                                <td style="padding: 8px; text-align: right;">{{ r.close_price?.toFixed(2) }}</td>
+                                <td style="padding: 8px; text-align: right;" :class="r.change_pct > 0 ? 'up' : r.change_pct < 0 ? 'down' : ''">
+                                    {{ r.change_pct > 0 ? '+' : '' }}{{ r.change_pct?.toFixed(2) }}
+                                </td>
+                                <td style="padding: 8px; text-align: right;">{{ (r.volume / 10000).toFixed(1) }}</td>
+                                <td style="padding: 8px; text-align: right;">{{ (r.amount / 10000).toFixed(0) }}</td>
+                                <td style="padding: 8px; text-align: right;">{{ r.turnover_rate?.toFixed(2) }}</td>
+                                <td style="padding: 8px; text-align: right;">{{ r.volume_ratio?.toFixed(2) }}</td>
+                                <td style="padding: 8px; text-align: center;">
+                                    <span v-if="r.is_limit_up" style="background: var(--red); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px;">涨停</span>
+                                    <span v-if="r.consecutive_limit_up_days > 1">{{ r.consecutive_limit_up_days }}连板</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="empty" v-if="!dailyLoading && !dailyRows.length">
+                    <div class="empty-icon">📊</div>
+                    <div>选择日期查询行情数据</div>
+                </div>
+                
+                <div class="loading" v-if="dailyLoading">
+                    <div class="spinner"></div>
+                    <span>加载中...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- K线图 Tab -->
+        <div v-if="activeTab === 'kline'">
+            <div class="filter-bar">
+                <input type="text" v-model="klineCode" placeholder="输入股票代码" 
+                    style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:8px;width:140px;"
+                    @keyup.enter="fetchKline">
+                <input type="date" v-model="klineStart" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:8px;">
+                <input type="date" v-model="klineEnd" style="background:var(--card);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:8px;">
+                <button class="btn btn-primary" @click="fetchKline">查询</button>
+            </div>
+            <div class="strategy-card" v-if="klineName" style="margin-bottom:12px;">
+                <span style="font-size:20px;font-weight:bold;">{{ klineCode }}</span>
+                <span style="font-size:16px;color:var(--text2);margin-left:10px;">{{ klineName }}</span>
+                <span style="font-size:14px;color:var(--text2);margin-left:20px;">最近: {{ klineLatest }}</span>
+            </div>
+            <div class="strategy-card" v-if="!klineData.length" style="text-align:center;padding:60px;">
+                <div style="font-size:48px;margin-bottom:12px;">📊</div>
+                <div>输入股票代码查看K线图</div>
+                <div style="font-size:13px;color:var(--text2);margin-top:8px;">或在选股信号/每日行情中点击股票代码</div>
+            </div>
+            <div class="strategy-card" v-if="klineData.length" style="padding:12px;">
+                <div id="klineChart" style="width:100%;height:500px;"></div>
+            </div>
+        </div>
+        
         <!-- Strategies Tab -->
         <div v-if="activeTab === 'strategies'">
             <div class="strategy-card">
@@ -232,15 +380,29 @@
             <div class="strategy-card">
                 <h3>🎯 自定义策略</h3>
                 <div v-for="(cs, idx) in config.custom_strategies" :key="idx" class="custom-strategy">
-                    <h4>{{ cs.name }} <span style="font-size: 12px; color: var(--text2);">- {{ cs.description }}</span></h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h4>{{ cs.name }}</h4>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <div class="toggle" :class="cs.enabled ? 'active' : ''" @click="toggleCustomStrategy(idx)"></div>
+                            <button class="btn btn-outline" style="padding:4px 10px;font-size:12px;" @click="removeCustomStrategy(idx)">删除</button>
+                        </div>
+                    </div>
                     <div class="condition-grid">
-                        <div class="condition-item" v-if="cs.conditions.change_pct_min">涨幅 ≥ {{ cs.conditions.change_pct_min }}%</div>
-                        <div class="condition-item" v-if="cs.conditions.change_pct_max">涨幅 ≤ {{ cs.conditions.change_pct_max }}%</div>
-                        <div class="condition-item" v-if="cs.conditions.volume_ratio_min">量比 ≥ {{ cs.conditions.volume_ratio_min }}</div>
-                        <div class="condition-item" v-if="cs.conditions.turnover_min">换手率 ≥ {{ cs.conditions.turnover_min }}%</div>
-                        <div class="condition-item" v-if="cs.conditions.above_ma20">在20日均线上方</div>
+                        <div class="condition-item">名称</div>
+                        <input class="config-input" v-model="cs.name" @change="saveConfig" placeholder="策略名称">
+                        <div class="condition-item">描述</div>
+                        <input class="config-input" v-model="cs.description" @change="saveConfig" placeholder="策略描述">
+                        <div class="condition-item">涨幅 ≥</div>
+                        <input class="config-input" type="number" v-model.number="cs.conditions.change_pct_min" @change="saveConfig" placeholder="0">
+                        <div class="condition-item">涨幅 ≤</div>
+                        <input class="config-input" type="number" v-model.number="cs.conditions.change_pct_max" @change="saveConfig" placeholder="99">
+                        <div class="condition-item">量比 ≥</div>
+                        <input class="config-input" type="number" v-model.number="cs.conditions.volume_ratio_min" @change="saveConfig" step="0.1" placeholder="0">
+                        <div class="condition-item">换手率 ≥ %</div>
+                        <input class="config-input" type="number" v-model.number="cs.conditions.turnover_min" @change="saveConfig" step="0.1" placeholder="0">
                     </div>
                 </div>
+                <button class="btn btn-primary" style="width:100%;margin-top:12px;" @click="addCustomStrategy">+ 添加自定义策略</button>
             </div>
         </div>
         
@@ -272,8 +434,20 @@
                     <label>最小市值</label>
                     <input type="number" v-model.number="config.filters.min_market_cap" @change="saveConfig"> 亿
                 </div>
+                <div class="strategy-row">
+                    <div class="strategy-info">
+                        <div class="strategy-name">只选主板</div>
+                        <div class="strategy-desc">排除创业板(300xxx)和科创板(688xxx)</div>
+                    </div>
+                    <div class="toggle" :class="config.filters.mainboard_only ? 'active' : ''" @click="config.filters.mainboard_only = !config.filters.mainboard_only; saveConfig()"></div>
+                </div>
+                <div class="config-row">
+                    <label>排除ST股</label>
+                    <div class="toggle" :class="config.filters.exclude_st ? 'active' : ''" @click="config.filters.exclude_st = !config.filters.exclude_st; saveConfig()"></div>
+                </div>
             </div>
         </div>
+        </div> <!-- end isAuthed -->
     </div>
 
     <script>
@@ -295,8 +469,147 @@
             
             const filterStrategy = ref('');
             const filterCode = ref('');
+            const filterName = ref('');
+            const filterDate = ref('');
             const filterMinScore = ref(0);
             const totalStocks = ref(5000);
+            
+            let debounceTimer = null;
+            const debounceFetchSignals = () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(fetchSignals, 500);
+            };
+            
+            // K线相关
+            const klineCode = ref('');
+            const klineName = ref('');
+            const klineData = ref([]);
+            const klineStart = ref('');
+            const klineEnd = ref('');
+            const klineLatest = ref('');
+            
+            const fetchKline = async () => {
+                if (!klineCode.value) return;
+                const code = klineCode.value;
+                try {
+                    const params = {};
+                    if (klineStart.value) params.start = klineStart.value;
+                    if (klineEnd.value) params.end = klineEnd.value;
+                    const { data } = await axios.get('/api/kline/' + code, { params });
+                    if (data.error) { klineName.value = ''; klineData.value = []; return; }
+                    klineName.value = data.name;
+                    klineData.value = data.data;
+                    if (data.data.length) klineLatest.value = data.data[data.data.length-1].date;
+                    activeTab.value = 'kline';
+                    await Vue.nextTick();
+                    renderKlineChart(data.data, data.name);
+                } catch (e) { klineName.value = ''; klineData.value = []; }
+            };
+            
+            const showKline = (code) => {
+                klineCode.value = code;
+                klineStart.value = '';
+                klineEnd.value = '';
+                fetchKline();
+            };
+            
+            const renderKlineChart = (data, name) => {
+                const dom = document.getElementById('klineChart');
+                if (!dom) return;
+                const chart = echarts.init(dom);
+                
+                const dates = data.map(d => d.date);
+                const ohlc = data.map(d => [d.o, d.c, d.l, d.h]);
+                const volumes = data.map(d => d.v);
+                const pcts = data.map(d => d.pct);
+                
+                const upColor = '#ef4444';
+                const downColor = '#22c55e';
+                
+                chart.setOption({
+                    animation: true,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: { type: 'cross' },
+                        formatter: function(params) {
+                            const i = params[0]?.dataIndex;
+                            if (i == null) return '';
+                            const d = data[i];
+                            const color = d.c >= d.o ? upColor : downColor;
+                            return `<b>${d.date}</b><br/>开: ${d.o} 高: ${d.h} 低: ${d.l} 收: <span style="color:${color};font-weight:bold">${d.c}</span><br/>涨跌: ${d.pct > 0 ? '+' : ''}${d.pct}%<br/>成交量: ${(d.v/10000).toFixed(0)}万手`;
+                        }
+                    },
+                    grid: [
+                        { left: '10%', right: '10%', top: '8%', height: '55%' },
+                        { left: '10%', right: '10%', top: '72%', height: '18%' }
+                    ],
+                    xAxis: [
+                        { type: 'category', data: dates, gridIndex: 0, axisLine: { lineStyle: { color: '#444' } }, axisLabel: { color: '#888' } },
+                        { type: 'category', data: dates, gridIndex: 1, axisLine: { lineStyle: { color: '#444' } }, axisLabel: { color: '#888' } }
+                    ],
+                    yAxis: [
+                        { scale: true, gridIndex: 0, axisLine: { lineStyle: { color: '#444' } }, axisLabel: { color: '#888' }, splitLine: { lineStyle: { color: '#1e1e3a' } } },
+                        { scale: true, gridIndex: 1, axisLine: { lineStyle: { color: '#444' } }, axisLabel: { color: '#888' }, splitLine: { lineStyle: { color: '#1e1e3a' } } }
+                    ],
+                    dataZoom: [
+                        { type: 'inside', xAxisIndex: [0, 1], start: 0, end: 100 }
+                    ],
+                    series: [
+                        {
+                            name: name,
+                            type: 'candlestick',
+                            data: ohlc,
+                            xAxisIndex: 0,
+                            yAxisIndex: 0,
+                            itemStyle: { color: upColor, color0: downColor, borderColor: upColor, borderColor0: downColor }
+                        },
+                        {
+                            name: '成交量',
+                            type: 'bar',
+                            data: volumes.map((v, i) => ({
+                                value: v,
+                                itemStyle: { color: pcts[i] >= 0 ? upColor : downColor, opacity: 0.6 }
+                            })),
+                            xAxisIndex: 1,
+                            yAxisIndex: 1
+                        }
+                    ]
+                });
+                window.addEventListener('resize', () => chart.resize());
+            };
+            
+            // 登录相关
+            const loginPassword = ref('');
+            const loginError = ref('');
+            const dailyToken = ref(localStorage.getItem('daily_token') || '');
+            const isAuthed = ref(!!dailyToken.value);
+            
+            const doLogin = async () => {
+                loginError.value = '';
+                try {
+                    const { data } = await axios.post('/api/daily/login', { password: loginPassword.value });
+                    if (data.ok) {
+                        isAuthed.value = true;
+                        dailyToken.value = data.token;
+                        localStorage.setItem('daily_token', data.token);
+                        fetchSignals();
+                        fetchConfig();
+                    }
+                } catch (e) {
+                    loginError.value = '密码错误';
+                }
+            };
+            
+            // 每日行情（复用登录token，不需要二次登录）
+            const dailyDate = ref(new Date().toISOString().slice(0, 10));
+            const dailySort = ref('change_pct');
+            const dailyN = ref(50);
+            const dailySummary = ref(null);
+            const dailyRows = ref([]);
+            const dailyLoading = ref(false);
+            const dailyAuthed = computed(() => isAuthed.value);
+            const dailyError = ref('');
+            const dailyPassword = ref('');
             
             const strategyNamesMap = {
                 'ma_bullish': '均线多头排列',
@@ -317,7 +630,7 @@
             const filteredSignals = computed(() => {
                 return signals.value.filter(sig => {
                     if (filterStrategy.value && sig.strategy !== filterStrategy.value) return false;
-                    if (filterCode.value && !sig.code.includes(filterCode.value)) return false;
+                    if (filterCode.value && !sig.stock_code.includes(filterCode.value)) return false;
                     if (sig.score < filterMinScore.value) return false;
                     return true;
                 });
@@ -338,8 +651,27 @@
             
             const fetchSignals = async () => {
                 try {
-                    const { data } = await axios.get('/api/signals?size=200');
-                    signals.value = data.data || [];
+                    // 如果有搜索条件，使用 query API
+                    const hasSearch = filterCode.value || filterName.value || filterDate.value || filterStrategy.value || filterMinScore.value > 0;
+                    
+                    if (hasSearch) {
+                        const params = new URLSearchParams();
+                        params.append('size', '200');
+                        if (filterCode.value) params.append('code', filterCode.value);
+                        if (filterName.value) params.append('name', filterName.value);
+                        if (filterDate.value) params.append('date', filterDate.value);
+                        if (filterStrategy.value) params.append('strategy', filterStrategy.value);
+                        if (filterMinScore.value > 0) params.append('min_score', filterMinScore.value);
+                        
+                        const { data } = await axios.get('/api/signals/query?' + params.toString());
+                        signals.value = data.data || [];
+                    } else {
+                        const { data } = await axios.get('/api/signals?size=200&source=db');
+                        signals.value = data.data || [];
+                        if (data.trade_date) {
+                            status.value.trade_date = data.trade_date;
+                        }
+                    }
                     strategyNames.value = [...new Set(signals.value.map(s => s.strategy))];
                 } catch (e) {}
             };
@@ -371,6 +703,27 @@
                 saveConfig();
             };
             
+            const toggleCustomStrategy = (idx) => {
+                config.value.custom_strategies[idx].enabled = !config.value.custom_strategies[idx].enabled;
+                saveConfig();
+            };
+            
+            const addCustomStrategy = () => {
+                if (!config.value.custom_strategies) config.value.custom_strategies = [];
+                config.value.custom_strategies.push({
+                    name: '我的策略',
+                    description: '',
+                    enabled: true,
+                    conditions: { change_pct_min: null, change_pct_max: null, volume_ratio_min: null, turnover_min: null }
+                });
+                saveConfig();
+            };
+            
+            const removeCustomStrategy = (idx) => {
+                config.value.custom_strategies.splice(idx, 1);
+                saveConfig();
+            };
+            
             const saveConfig = async () => {
                 try {
                     await axios.post('/api/config', config.value);
@@ -379,22 +732,50 @@
                 }
             };
             
+            const fetchDailyData = async () => {
+                if (!dailyToken.value) return;
+                dailyLoading.value = true;
+                try {
+                    const { data } = await axios.get('/api/daily/data', {
+                        params: { date: dailyDate.value, sort: dailySort.value, n: dailyN.value, t: dailyToken.value }
+                    });
+                    if (data.error) {
+                        dailySummary.value = null;
+                        dailyRows.value = [];
+                    } else {
+                        dailySummary.value = data.summary;
+                        dailyRows.value = data.rows;
+                    }
+                } catch (e) {
+                    if (e.response?.status === 401) {
+                        isAuthed.value = false;
+                        localStorage.removeItem('daily_token');
+                    }
+                }
+                dailyLoading.value = false;
+            };
+            
             onMounted(() => {
-                fetchStatus();
-                fetchSignals();
-                fetchConfig();
-                
-                // Auto refresh
-                setInterval(async () => {
-                    await fetchStatus();
-                    await fetchSignals();
-                }, 15000);
+                if (isAuthed.value) {
+                    fetchSignals();
+                    fetchConfig();
+                }
             });
             
+            const dailyLogin = doLogin; // 复用主登录
+            
             return {
+                // 登录
+                isAuthed, loginPassword, loginError, doLogin,
+                // 选股信号
                 activeTab, status, signals, config, strategyNames, strategyNamesMap, strategyDescs,
-                filterStrategy, filterCode, filterMinScore, filteredSignals, totalStocks,
-                getScoreColor, triggerScan, toggleStrategy, saveConfig
+                filterStrategy, filterCode, filterName, filterDate, filterMinScore, totalStocks, debounceFetchSignals,
+                filteredSignals, getScoreColor, triggerScan, toggleStrategy, toggleCustomStrategy, addCustomStrategy, removeCustomStrategy, saveConfig,
+                // K线
+                klineCode, klineName, klineData, klineStart, klineEnd, klineLatest, fetchKline, showKline,
+                // 每日行情
+                dailyAuthed, dailyPassword, dailyError, dailyDate, dailySort, dailyN,
+                dailySummary, dailyRows, dailyLoading, dailyLogin, fetchDailyData
             };
         }
     }).mount('#app');

@@ -244,9 +244,16 @@ class 涨幅榜情绪(BaseStrategy):
         
         latest = klines[-1]
         change_pct = latest["change_pct"]
-        turnover = latest.get("turnover", 0)
+        volume = latest.get("volume", 0)
         
-        if 3 < change_pct < 7 and 3 < turnover < 15:
+        # 用量比替代换手率
+        if len(klines) >= 11:
+            avg_vol = sum(k["volume"] for k in klines[-11:-1]) / 10
+            vol_ratio = volume / avg_vol if avg_vol > 0 else 0
+        else:
+            vol_ratio = 0
+        
+        if 3 < change_pct < 8 and vol_ratio > 1.5:
             score = 50
             if change_pct > 5:
                 score += 10
@@ -257,7 +264,7 @@ class 涨幅榜情绪(BaseStrategy):
                 code=code[:6], name="", price=latest["close"],
                 change_pct=change_pct,
                 strategy=self.name,
-                reason=f"涨幅{change_pct:.1f}%，换手率{turnover:.1f}%，温和放量",
+                reason=f"涨幅{change_pct:.1f}%，量比{vol_ratio:.1f}倍",
                 score=score
             )
         return None
@@ -265,12 +272,38 @@ class 涨幅榜情绪(BaseStrategy):
 
 # ============ 预设策略注册 ============
 
+
+class 涨停板战法_v2(BaseStrategy):
+    """今日涨停+放量检测"""
+    def __init__(self):
+        super().__init__("涨停板战法_v2", "今日涨停+放量")
+    
+    def check(self, code: str, klines: list) -> Optional[Signal]:
+        if len(klines) < 2:
+            return None
+        latest = klines[-1]
+        change_pct = latest["change_pct"]
+        if change_pct < 9.5:
+            return None
+        if len(klines) >= 11:
+            avg_vol = sum(k["volume"] for k in klines[-11:-1]) / 10
+            vol_ratio = latest["volume"] / avg_vol if avg_vol > 0 else 1
+        else:
+            vol_ratio = 1
+        score = 70
+        if vol_ratio > 2: score += 10
+        if vol_ratio > 3: score += 10
+        reason = f"涨停{change_pct:.1f}%"
+        if vol_ratio > 1.5: reason += f"，量比{vol_ratio:.1f}倍"
+        return Signal(code=code[:6], name="", price=latest["close"], change_pct=change_pct, strategy=self.name, reason=reason, score=score)
+
 BUILTIN_STRATEGIES = {
     "ma_bullish": MA多头排列,
     "volume_break": 放量突破,
     "pullback": 缩量回踩,
     "limit_up": 涨停板战法,
     "momentum": 涨幅榜情绪,
+    "limit_up_today": 涨停板战法_v2,
 }
 
 

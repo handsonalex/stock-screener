@@ -1,5 +1,5 @@
 """
-数据获取模块 - 新浪财经API
+数据获取模块 - 腾讯财经API
 """
 import requests
 import json
@@ -7,10 +7,11 @@ import time
 from typing import Optional
 
 # API URLs
-SINA_KLINE_URL = "https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData"
+TENCENT_KLINE_URL = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "Referer": "https://finance.qq.com",
 }
 
 
@@ -59,33 +60,43 @@ def get_stock_quote(stock_code):
 
 
 def get_kline_data(stock_code, klt=101, limit=120):
-    """获取K线数据"""
+    """获取K线数据 - 腾讯财经API"""
     if stock_code.startswith("6"):
         symbol = "sh" + stock_code
     else:
         symbol = "sz" + stock_code
     
-    url = SINA_KLINE_URL + "?symbol=" + symbol + "&scale=240&ma=no&datalen=" + str(limit)
+    # 腾讯API格式：前复权日线
+    url = f"{TENCENT_KLINE_URL}?param={symbol},day,,,{limit},qfq"
     
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
         data = resp.json()
         
+        if data.get("code") != 0:
+            return []
+        
+        stock_data = data.get("data", {}).get(symbol, {})
+        # 优先前复权数据
+        day_data = stock_data.get("qfqday") or stock_data.get("day") or []
+        
         klines = []
-        for item in data:
-            klines.append({
-                "date": item.get("day", ""),
-                "open": float(item.get("open", 0)),
-                "close": float(item.get("close", 0)),
-                "high": float(item.get("high", 0)),
-                "low": float(item.get("low", 0)),
-                "volume": float(item.get("volume", 0)),
-                "amount": 0,
-                "amplitude": 0,
-                "change_pct": 0,
-                "change": 0,
-                "turnover": 0,
-            })
+        for item in day_data:
+            # 腾讯格式: [date, open, close, high, low, volume]
+            if len(item) >= 6:
+                klines.append({
+                    "date": item[0],
+                    "open": float(item[1]),
+                    "close": float(item[2]),
+                    "high": float(item[3]),
+                    "low": float(item[4]),
+                    "volume": float(item[5]),
+                    "amount": 0,
+                    "amplitude": 0,
+                    "change_pct": 0,
+                    "change": 0,
+                    "turnover": 0,
+                })
         
         for i in range(len(klines)):
             if i > 0 and klines[i-1]["close"] > 0:

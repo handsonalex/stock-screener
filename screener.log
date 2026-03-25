@@ -16,3 +16,677 @@ Web面板: http://0.0.0.0:5000
  * Running on http://127.0.0.1:5000
  * Running on http://10.6.0.4:5000
 [33mPress CTRL+C to quit[0m
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:24:17
+==================================================
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+待扫描: 15999 只
+正在批量获取实时行情...
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+117.173.88.68 - - [24/Mar/2026 23:24:18] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:24:18] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:24:41] "GET / HTTP/1.1" 200 -
+/root/code/stock-screener/web_server.py:172: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  sum_df = pd.read_sql("""SELECT COUNT(*) as total,
+/root/code/stock-screener/web_server.py:184: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(sql, conn, params=[trade_date, n])
+127.0.0.1 - - [24/Mar/2026 23:24:43] "GET /api/daily/data?t=ae2ca3a7addc0718&date=2026-03-24&n=3 HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:25:16] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:25:16] "GET /api/signals?size=200 HTTP/1.1" 200 -
+171.217.41.232 - - [24/Mar/2026 23:25:54] code 400, message Bad request version ('IÅóA«\x89\x08B¿\x00*zz\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:25:54] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03\x0dç8\x9aWîm£$pñ?'DÞ\x87\x9bÝÜ#T\x1c¬DP\x90Ðëì\x17Oþ ÑI5#(\x12Î\x9d$7ý¦HÚq©èÖ[Aöõ IÅóA«\x89\x08B¿\x00*zz\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:54] code 400, message Bad request version ('Â@\x00,\x1a\x1a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:25:54] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03\x16E\x8a\x13\x9d\x8a)Oº±}\x13Zmµ5±À±ÔÒ\x9b\x94¥±\x0cZa \x97\x9fõ \x97\x8eðß\\hh«iì\x13¨]q\x86îñ%ã\x09äWk\x1aáÆ\x9e\x9aÁ\x0cÂ@\x00,\x1a\x1a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:54] code 400, message Bad request version ('ø~0ý×ÄJq\x8fô\x83¦\x90t»é*$1¿\x03\x9b`g\x00*ÊÊ\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:25:54] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03]ÌPVÜ\x98\x1c\x8c\x8bÕ\x1aË98ñYYÑnå \x1d\x12\x11ü\x9e\x8e\x00\x18\x16\x1f\x95 ©äÄ´â)»\x0dø~0ý×ÄJq\x8fô\x83¦\x90t»é*$1¿\x03\x9b`g\x00*ÊÊ\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:55] code 400, message Bad request version ('\x00,\x9a\x9a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:25:55] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03tó\x99\x85W!ö\x14jQ\x1bÙIýnh\x81¹n,Ò\x03\x97'R~y°OähE \x9f²¾¸wa­/âPF@\x97\x95÷P\x9bk\x16\x9a\x9dBInâ[5\x11\x0c\x84\x0f\x85\x00,\x9a\x9a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+36.110.131.27 - - [24/Mar/2026 23:25:55] code 400, message Bad request version ('À\x13À')
+36.110.131.27 - - [24/Mar/2026 23:25:55] "[31m[1m\x16\x03\x01\x00ä\x01\x00\x00à\x03\x03Þ aï\\¡2Ùì\x87ß½\x0cA²\x1f\x11_ÓÃ@µ\x1d\x1aw\x92®ëXß½Ø ¾\x82÷Ê\x17õ È4°ÅµòÔ\x02\x85\x0c{ïÑ\x18ù?æ\x03Lðå$\x98\\±\x00\x1cÀ+À/À,À0Ì©Ì¨À\x09À\x13À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:59] code 400, message Bad request version ('\x875çmv\x0fÓð³\x98\xadK»\x8aVÃ\x8b\x08m-ká\x8aûW"\x0fT¸ÿR\x07\x00*::\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:25:59] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03\x00£Ý\x18[\x81¨\x86@¯g\x84ñ­j\x9b?E\x0e\x80Hg\x08bnÝ\x1d½ò&cw \x875çmv\x0fÓð³\x98­K»\x8aVÃ\x8b\x08m-ká\x8aûW"\x0fT¸ÿR\x07\x00*::\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:59] code 400, message Bad request version ('LÕð8#ñÅ')
+171.217.41.232 - - [24/Mar/2026 23:25:59] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03¬9´\x1eÇ\x9cÇHBmV\x9e#CVy4kÕZ~U Ã\x04\x13'\x96\x8e\x95)É ñ\x8e©¼«Èê\x0b\x03_\x0dLÕð8#ñÅ[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:59] code 400, message Bad request version ('\\q"\x8alv¸½ïÓ\x92mø,Dnòk|\x03¦\xadÓ¤\x82cýx\x10\x8a\x9e¡\x00*\x8a\x8a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:25:59] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03®39YþNù\x1du\x83&Å§Vnk¾3\x1f.\x9e\x05Ùûô\x8d\x02ñé\x13¸p \\q"\x8alv¸½ïÓ\x92mø,Dnòk|\x03¦­Ó¤\x82cýx\x10\x8a\x9e¡\x00*\x8a\x8a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:25:59] code 400, message Bad request version ("\x84\x83~ZQ\x18y¹v¨î\x19'\x98E\x9fï¶e\x08Ýn(_¦P\x03õ\x00,zz\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À")
+171.217.41.232 - - [24/Mar/2026 23:25:59] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03xZ»ôoïZ¨`Lì7\x1aò¹\x8d\x15Z\x83Ýî\x91÷(ZãV¾¨9ã\x1f Ûa­\x0c\x84\x83~ZQ\x18y¹v¨î\x19'\x98E\x9fï¶e\x08Ýn(_¦P\x03õ\x00,zz\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:01] code 400, message Bad request version ('¸-e\x00*\x8a\x8a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:01] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03¬\x1b²Ïê$\x07ý£çFá\x97ä\x01ßÜã\x99Q,\x817f²ß¤Ãå8\x02à Ø\x02\x1a\x83 h\x89Ê\x933D\x1fvÿ7\x93'JÊ³V\x1b\x1bßf\x0c¸æ\x09¸-e\x00*\x8a\x8a\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:01] code 400, message Bad request version ('÷"\x07l*Ños[Öp\xad')
+171.217.41.232 - - [24/Mar/2026 23:26:01] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03A2²\x91$ i\x9açà\x08é°\x09\x83Ió¥\x9f·.åö÷ue\x9f\x14u'\x005 Ç\x80½Û7/«#¼ØÉ,\x1f÷"\x07l*Ños[Öp­[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:01] code 400, message Bad request version ('\x00\x02\x01\x00\x00\x12\x00\x00\x00')
+171.217.41.232 - - [24/Mar/2026 23:26:01] "[31m[1m\x16\x03\x01\x06 \x01\x00\x06\x9c\x03\x03^ïAÅ! ,Ë\x01\x1c¹¦k¬¨\x9eúdVGÇm\x8fE¶\x07Ä\x8bñ96ê ì\x8c\x88bÒ1í\x1a\x95Âã\x97Wæ9mï&P\x84Â\x06°t¢Ï,AñÝ\x11â\x00 JJ\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x063êê\x00\x00\x00-\x00\x02\x01\x01þ\x0d\x00º\x00\x00\x01\x00\x01:\x00 4\x1cR}µ\x07Ì\x0dç&`ù\x8c§\x13z\x1f½\x0cK\x05\x94½\x00Ñ0({\x80±Ì%\x00\x90î*Ry\x13ò\x8dj\x15é\x003q\x83\x11)7OJ­\x90G§ï'>¦\x8dSÊ\x01\x84¡m´´Eî\x89\x03a\x90Öó\x85«Ô!\x02m²µ`o~ù{ûÉ\x9byLéî\x0f\x97ÛsÃAö«Ø\x87õÙ££òäÖs%\x17Ú\x09À\x86ö\x1aÐàÃ\x89rýª¶'iìwÅ\x8e\x85\x80r\x8d¾\x1bM4axçí^Ãï\x9f\x03m-î\x8fu_lÄ`W:\x15­\x15Õ/\x84u\x06|&r\x14\x00\x0d\x00\x12\x00\x10\x04\x03\x08\x04\x04\x01\x05\x03\x08\x05\x05\x01\x08\x06\x06\x01\x00\x05\x00\x05\x01\x00\x00\x00\x00\x00\x0b\x00\x02\x01\x00\x00\x12\x00\x00\x00[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:01] code 400, message Bad request version ('\x00\x02\x01\x00\x00+\x00\x07\x06')
+171.217.41.232 - - [24/Mar/2026 23:26:01] "[31m[1m\x16\x03\x01\x06 \x01\x00\x06\x9c\x03\x03,'l\x94R\x02>Hû\x88\x87¢A}î@ø/\x99ñî\x06e4\x09¤é5U;Þ\x92 Þ/g|&µ¾\x96c\x9eè5\x84\x18\x066¨gh°\x10¦n\x12\x18Ë¢PsP2=\x00 jj\x13\x01\x13\x02\x13\x03À+À/À,À0Ì©Ì¨À\x13À\x14\x00\x9c\x00\x9d\x00/\x005\x01\x00\x063\x8a\x8a\x00\x00\x00\x12\x00\x00\x00\x0d\x00\x12\x00\x10\x04\x03\x08\x04\x04\x01\x05\x03\x08\x05\x05\x01\x08\x06\x06\x01ÿ\x01\x00\x01\x00\x00\x0b\x00\x02\x01\x00\x00+\x00\x07\x06[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:02] code 400, message Bad request version ('m\x00*ÚÚ\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:02] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03\x0b\x92\x92b\x8eêv\\ôC{b\x9f\x03î¿VH´HûþK\x9aÖ\x1d[·º\x18\x04Æ Ì\x8b\x95V·\x88\x8cÅ7\x95\x0f\x8fPÒøÙ°Ï\x8e\x121\x96/\x8d\x82\x15\x19DÅ\x03 m\x00*ÚÚ\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:02] code 400, message Bad request version ('öq<À´¹9\x82WÚð\x17¼\x9d±\x11i×¤"Oã1Ytd\x15ç\x9b\x88Û¸\x00,ÊÊ\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:02] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03\x88\x10r\x02\x86þÒÞ+\x0dêB6ä\x92yÕ\x85\x17ÓÑíº\x83¯}2\x8eì\x97Êh öq<À´¹9\x82WÚð\x17¼\x9d±\x11i×¤"Oã1Ytd\x15ç\x9b\x88Û¸\x00,ÊÊ\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:12] code 400, message Bad request version ('w´Æþ×*\x16*F/\x99Y\x00*êê\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:12] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03[\x17³÷hÄU©a%\x10\x0c+ ö\\§Â*B\x8f\x0b[@Ów\x0c\x89\x12î\x09ì p\x06rËí[ljÎ£R½5xh\x18\x1dV4\x85w´Æþ×*\x16*F/\x99Y\x00*êê\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:12] code 400, message Bad request version ('\x8fhva\xadî@Z¥µð\x1bRnÈ\x1b´£«\x80÷¥*\x01Ã\x9a\x80p\x8bt\x98\x08\x00,**\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:12] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03ÊüNñ¥pÀá»?\x94ôØÚ\x1b^hi7\x1f±\x8d¤ªÿÓÓó^Pt¼ \x8fhva­î@Z¥µð\x1bRnÈ\x1b´£«\x80÷¥*\x01Ã\x9a\x80p\x8bt\x98\x08\x00,**\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:12] code 400, message Bad request version ('æ\xad\x8fÂ#ÅM\x9eÒ6\x9d0ið\x82\x0fx±wUB¹\x13\x90dÈúü\x06=\x11M\x00*zz\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:12] "[31m[1m\x16\x03\x01\x05å\x01\x00\x05á\x03\x03õÜ\x110qGäàngÇ\x1c\x07wcÕq5H\x09²åù\x85µ\x86¿j6\x8aûj æ­\x8fÂ#ÅM\x9eÒ6\x9d0ið\x82\x0fx±wUB¹\x13\x90dÈúü\x06=\x11M\x00*zz\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+171.217.41.232 - - [24/Mar/2026 23:26:12] code 400, message Bad request version ('©ª\x00,jj\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À')
+171.217.41.232 - - [24/Mar/2026 23:26:12] "[31m[1m\x16\x03\x01\x05ç\x01\x00\x05ã\x03\x03åÍ\x1ar\x85\x95ò\x9f\x82ê»õ83Ë!Uøú7«\x0c|ØìñÄË$6\x99õ \x0bT¦\x1a$ú;\x1eRu8Ð\x00Ô\x1cî±\x97)U³\x12»:%\x98r\x8c¢\x0c©ª\x00,jj\x13\x02\x13\x03\x13\x01À,À+Ì©À0À/Ì¨À[0m" 400 -
+117.173.88.68 - - [24/Mar/2026 23:26:17] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:26:17] "GET /api/signals?size=200 HTTP/1.1" 200 -
+162.14.121.142 - - [24/Mar/2026 23:27:06] code 400, message Bad request version ('\x86á0w\x7f\x12û³\x83ð\x01\x9e\x89·®ORâ¹2Ñüúï¹$\x1b|ÐVï"\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À\'\x00gÀ')
+162.14.121.142 - - [24/Mar/2026 23:27:06] "[31m[1m\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03«Û*UAÚ5¢KñhâÉÒòþ³Åwt&ú\x1eW¹mßÝ\x91bUÓ \x86á0w\x7f\x12û³\x83ð\x01\x9e\x89·®ORâ¹2Ñüúï¹$\x1b|ÐVï"\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ[0m" 400 -
+162.14.121.142 - - [24/Mar/2026 23:27:07] "GET / HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:27:16] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:27:16] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:27:23] "GET / HTTP/1.1" 200 -
+/root/code/stock-screener/web_server.py:172: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  sum_df = pd.read_sql("""SELECT COUNT(*) as total,
+/root/code/stock-screener/web_server.py:184: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(sql, conn, params=[trade_date, n])
+127.0.0.1 - - [24/Mar/2026 23:27:31] "GET /api/daily/data?t=ae2ca3a7addc0718&date=2026-03-24&n=3 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:27:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:27:57] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:27:57] "GET /api/signals?size=200 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:27:57] "GET /api/config HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:12] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:12] "GET /api/signals?size=200 HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:28:16] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:28:16] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:32] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:32] "GET /api/signals?size=200 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:47] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:47] "GET /api/signals?size=200 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:28:57] "[31m[1mPOST /api/daily/login HTTP/1.0[0m" 401 -
+127.0.0.1 - - [24/Mar/2026 23:29:02] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:29:02] "GET /api/signals?size=200 HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:29:16] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:29:16] "GET /api/signals?size=200 HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:30:16] "GET /api/status HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:30:17] "GET /api/signals?size=200 HTTP/1.1" 200 -
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:30:49
+==================================================
+待扫描: 15999 只
+正在批量获取实时行情...
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+/root/code/stock-screener/db_screener.py:124: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:31:16] "GET /api/status HTTP/1.1" 200 -
+[2026-03-24 23:31:17,079] ERROR in app: Exception on /api/signals [GET]
+Traceback (most recent call last):
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/web_server.py", line 67, in api_signals
+    signals, trade_date = db_scan_all(strategies)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/db_screener.py", line 141, in scan_all
+    signals = scan_strategy(df, sname)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/db_screener.py", line 60, in scan_strategy
+    (df['close_price'] > df['ma5']) &
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/common.py", line 85, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/arraylike.py", line 58, in __gt__
+    return self._cmp_method(other, operator.gt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/series.py", line 6735, in _cmp_method
+    res_values = ops.comparison_op(lvalues, rvalues, op)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py", line 359, in comparison_op
+    res_values = _na_arithmetic_op(lvalues, rvalues, op, is_cmp=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py", line 220, in _na_arithmetic_op
+    result = func(left, right)
+             ^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/computation/expressions.py", line 243, in evaluate
+    return _evaluate(op, op_str, left_op, right_op)  # type: ignore[misc]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/computation/expressions.py", line 74, in _evaluate_standard
+    return op(left_op, right_op)
+           ^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'float' and 'NoneType'
+117.173.88.68 - - [24/Mar/2026 23:31:17] "[35m[1mGET /api/signals?size=200 HTTP/1.1[0m" 500 -
+[2026-03-24 23:31:17,081] ERROR in app: Exception on /api/signals [GET]
+Traceback (most recent call last):
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/web_server.py", line 67, in api_signals
+    signals, trade_date = db_scan_all(strategies)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/db_screener.py", line 141, in scan_all
+    signals = scan_strategy(df, sname)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/db_screener.py", line 60, in scan_strategy
+    (df['close_price'] > df['ma5']) &
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/common.py", line 85, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/arraylike.py", line 58, in __gt__
+    return self._cmp_method(other, operator.gt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/series.py", line 6735, in _cmp_method
+    res_values = ops.comparison_op(lvalues, rvalues, op)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py", line 359, in comparison_op
+    res_values = _na_arithmetic_op(lvalues, rvalues, op, is_cmp=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py", line 220, in _na_arithmetic_op
+    result = func(left, right)
+             ^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/computation/expressions.py", line 243, in evaluate
+    return _evaluate(op, op_str, left_op, right_op)  # type: ignore[misc]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/computation/expressions.py", line 74, in _evaluate_standard
+    return op(left_op, right_op)
+           ^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'float' and 'NoneType'
+127.0.0.1 - - [24/Mar/2026 23:31:17] "[35m[1mGET /api/signals?source=db&size=5 HTTP/1.1[0m" 500 -
+/root/code/stock-screener/db_screener.py:124: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+[2026-03-24 23:31:24,893] ERROR in app: Exception on /api/signals [GET]
+Traceback (most recent call last):
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/web_server.py", line 67, in api_signals
+    signals, trade_date = db_scan_all(strategies)
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/db_screener.py", line 141, in scan_all
+    signals = scan_strategy(df, sname)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/db_screener.py", line 60, in scan_strategy
+    (df['close_price'] > df['ma5']) &
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/common.py", line 85, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/arraylike.py", line 58, in __gt__
+    return self._cmp_method(other, operator.gt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/series.py", line 6735, in _cmp_method
+    res_values = ops.comparison_op(lvalues, rvalues, op)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py", line 359, in comparison_op
+    res_values = _na_arithmetic_op(lvalues, rvalues, op, is_cmp=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py", line 220, in _na_arithmetic_op
+    result = func(left, right)
+             ^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/computation/expressions.py", line 243, in evaluate
+    return _evaluate(op, op_str, left_op, right_op)  # type: ignore[misc]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/pandas/core/computation/expressions.py", line 74, in _evaluate_standard
+    return op(left_op, right_op)
+           ^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'float' and 'NoneType'
+127.0.0.1 - - [24/Mar/2026 23:31:24] "[35m[1mGET /api/signals?source=db&size=5 HTTP/1.1[0m" 500 -
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:32:09
+==================================================
+待扫描: 15999 只
+正在批量获取实时行情...
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+117.173.88.68 - - [24/Mar/2026 23:32:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:32:17] "GET /api/signals?size=200 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:32:34] "GET /api/signals?source=db&size=5 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:157: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:32:39] "GET /api/market HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:32:44] "GET /api/signals?source=db&size=3 HTTP/1.0" 200 -
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:33:13
+==================================================
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+117.173.88.68 - - [24/Mar/2026 23:33:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:33:18] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:33:42] "GET / HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:33:43] "GET /api/signals?source=db&size=3 HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:34:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:34:17] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:34:17] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:34:18] "GET /api/signals?size=200 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:34:18] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:34:21] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:34:21] "GET /api/config HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:34:21] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:34:36] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:34:36] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:34:51] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:34:51] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:35:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:35:17] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:35:48] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:35:49] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:36:03] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:36:03] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:36:17] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:125: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:36:34
+==================================================
+待扫描: 15999 只
+正在批量获取实时行情...
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [24/Mar/2026 23:37:04] "POST /api/scan HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:37:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:37:18] "GET /api/signals?size=200 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+[2026-03-24 23:37:18,761] ERROR in app: Exception on /api/signals/query [GET]
+Traceback (most recent call last):
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/web_server.py", line 200, in api_signals_query
+    return jsonify(result)
+           ^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/__init__.py", line 170, in jsonify
+    return current_app.json.response(*args, **kwargs)  # type: ignore[return-value]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/provider.py", line 214, in response
+    f"{self.dumps(obj, **dump_args)}\n", mimetype=self.mimetype
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type int64 is not JSON serializable
+127.0.0.1 - - [24/Mar/2026 23:37:18] "[35m[1mGET /api/signals/query?size=5 HTTP/1.1[0m" 500 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+[2026-03-24 23:37:39,986] ERROR in app: Exception on /api/signals/query [GET]
+Traceback (most recent call last):
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/web_server.py", line 200, in api_signals_query
+    return jsonify(result)
+           ^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/__init__.py", line 170, in jsonify
+    return current_app.json.response(*args, **kwargs)  # type: ignore[return-value]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/provider.py", line 214, in response
+    f"{self.dumps(obj, **dump_args)}\n", mimetype=self.mimetype
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/provider.py", line 179, in dumps
+    return json.dumps(obj, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/root/code/stock-screener/venv/lib/python3.12/site-packages/flask/json/provider.py", line 121, in _default
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
+TypeError: Object of type int64 is not JSON serializable
+127.0.0.1 - - [24/Mar/2026 23:37:39] "[35m[1mGET /api/signals/query?size=5 HTTP/1.1[0m" 500 -
+127.0.0.1 - - [24/Mar/2026 23:37:59] "GET / HTTP/1.1" 200 -
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:38:15
+==================================================
+待扫描: 15999 只
+正在批量获取实时行情...
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+117.173.88.68 - - [24/Mar/2026 23:38:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:38:19] "GET /api/signals?size=200 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:38:43] "GET /api/signals/query?size=3 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:38:50] "GET /api/signals/query?code=000809 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:38:51] "GET /api/signals/query?name=ç\x94\x9fç\x89© HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:38:51] "GET /api/signals/query?start=2026-03-24&end=2026-03-24&min_score=90 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:38:59] "GET /api/signals/query?name=能源 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:39:04] "POST /api/scan HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:39:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:39:19] "GET /api/signals?size=200 HTTP/1.1" 200 -
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:39:52
+==================================================
+待扫描: 15999 只
+正在批量获取实时行情...
+Web面板: http://0.0.0.0:5000
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+117.173.88.68 - - [24/Mar/2026 23:40:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:40:19] "GET /api/signals?size=200 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:40:20] "GET /api/signals/query?code=000809 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:40:20] "GET /api/signals/query?name=能源 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:40:20] "GET /api/signals/query?strategy=涨停板战法 HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:216: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
+/root/code/stock-screener/db_screener.py:228: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql(data_sql, conn, params=params + [size, offset])
+127.0.0.1 - - [24/Mar/2026 23:40:33] "GET /api/signals/query?code=000809 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:40:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:14] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:41:16] "GET /api/status HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:19] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:41:19] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:20] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:20] "GET /api/config HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:41:21] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:24] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:24] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:24] "GET /api/config HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:41:24] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:32] "[36mGET / HTTP/1.1[0m" 304 -
+127.0.0.1 - - [24/Mar/2026 23:41:32] "GET /api/config HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:32] "GET /api/status HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:41:32] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:42] "[36mGET / HTTP/1.1[0m" 304 -
+127.0.0.1 - - [24/Mar/2026 23:41:42] "GET /api/status HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:41:42] "GET /api/config HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:41:43] "GET /api/signals?size=200&source=db HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:16] "GET /api/status HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:42:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+/root/code/stock-screener/db_screener.py:253: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:42:20] "GET /api/market HTTP/1.0" 200 -
+117.173.88.68 - - [24/Mar/2026 23:42:20] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:21] "GET /api/signals?source=db&size=3 HTTP/1.0" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+127.0.0.1 - - [24/Mar/2026 23:42:28] "GET /api/signals?source=db&size=3 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:32] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:39] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:50] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:42:58] "GET / HTTP/1.1" 200 -
+117.173.88.68 - - [24/Mar/2026 23:43:16] "GET /api/status HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:43:22] "GET /api/signals?size=200 HTTP/1.1" 200 -
+已加载 7 个策略
+
+==================================================
+开始扫描: 2026-03-24 23:43:43
+==================================================
+Web面板: http://0.0.0.0:5000
+待扫描: 15999 只
+正在批量获取实时行情...
+ * Serving Flask app 'web_server'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.6.0.4:5000
+[33mPress CTRL+C to quit[0m
+117.173.88.68 - - [24/Mar/2026 23:44:18] "GET /api/status HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:44:19] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:44:19] "GET / HTTP/1.1" 200 -
+/root/code/stock-screener/db_screener.py:151: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("""
+117.173.88.68 - - [24/Mar/2026 23:44:24] "GET /api/signals?size=200 HTTP/1.1" 200 -
+127.0.0.1 - - [24/Mar/2026 23:44:24] "GET /api/signals?source=db&size=3 HTTP/1.0" 200 -
+127.0.0.1 - - [24/Mar/2026 23:44:43] "GET / HTTP/1.1" 200 -
+/root/code/stock-screener/fetch_history.py:13: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("SELECT id, stock_code, exchange FROM stocks WHERE status='active'", conn)
+补历史数据: 2024-03-25 ~ 2026-03-25
+/root/code/stock-screener/fetch_history.py:16: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df = pd.read_sql("SELECT id, stock_code, exchange FROM stocks WHERE status='active'", conn)
+共 5522 只股票
+  [100/5522] 已插入 39391 条
+  [200/5522] 已插入 78231 条
+  [300/5522] 已插入 116384 条
+  [400/5522] 已插入 156449 条
+  [500/5522] 已插入 199539 条
+  [600/5522] 已插入 242861 条
+  [700/5522] 已插入 286406 条
+  [800/5522] 已插入 331777 条
+  [900/5522] 已插入 378106 条
+  [1000/5522] 已插入 423953 条
+  [1100/5522] 已插入 467959 条
+  [1200/5522] 已插入 512961 条
+  [1300/5522] 已插入 557985 条
+  [1400/5522] 已插入 601646 条
+  [1500/5522] 已插入 649875 条
+  [1600/5522] 已插入 698128 条
+  [1700/5522] 已插入 742293 条
+  [1800/5522] 已插入 783054 条
+  [1900/5522] 已插入 823148 条
+  [2000/5522] 已插入 866016 条
+  [2100/5522] 已插入 911615 条
+  [2200/5522] 已插入 953684 条
+  [2300/5522] 已插入 994431 条
+  [2400/5522] 已插入 1034331 条
+  [2500/5522] 已插入 1077625 条
+  [2600/5522] 已插入 1124283 条
+  [2700/5522] 已插入 1170604 条
+  [2800/5522] 已插入 1217850 条
+  [2900/5522] 已插入 1263583 条
+  [3000/5522] 已插入 1308535 条
+  [3100/5522] 已插入 1352241 条
+  [3200/5522] 已插入 1399558 条
+  [3300/5522] 已插入 1447761 条
+  [3400/5522] 已插入 1495220 条
+  [3500/5522] 已插入 1543448 条
+  [3600/5522] 已插入 1586898 条
+  [3700/5522] 已插入 1632502 条
+  [3800/5522] 已插入 1677665 条
+  [3900/5522] 已插入 1721427 条
+  [4000/5522] 已插入 1768710 条
+  [4100/5522] 已插入 1816475 条
+  [4200/5522] 已插入 1863950 条
+  [4300/5522] 已插入 1911292 条
+  [4400/5522] 已插入 1959555 条
+  [4500/5522] 已插入 2007777 条
+  [4600/5522] 已插入 2056030 条
+  [4700/5522] 已插入 2103819 条
+  [4800/5522] 已插入 2152010 条
+  [4900/5522] 已插入 2191283 条
+  [5000/5522] 已插入 2234269 条
+  [5100/5522] 已插入 2282437 条
+  [5200/5522] 已插入 2330689 条
+  [5300/5522] 已插入 2378562 条
+  [5400/5522] 已插入 2425562 条
+  [5500/5522] 已插入 2469624 条
+完成！共插入 2474584 条K线数据
