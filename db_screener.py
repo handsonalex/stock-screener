@@ -231,12 +231,13 @@ def get_signals_from_db(trade_date=None, strategy=None):
     where = " AND ".join(conditions)
     
     sql = f"""
-        SELECT trade_date, stock_code, stock_name, price, change_pct, 
-               strategy, reason, score, volume_ratio, turnover_rate,
-               is_limit_up, consecutive_limit_up_days
-        FROM stock_signals
-        WHERE {where}
-        ORDER BY score DESC
+        SELECT ss.trade_date, ss.stock_code, ss.stock_name, ss.price, ss.change_pct,
+               ss.strategy, ss.reason, ss.score, ss.volume_ratio, ss.turnover_rate,
+               ss.is_limit_up, ss.consecutive_limit_up_days
+        FROM stock_signals ss
+        JOIN stocks s ON ss.stock_code = s.stock_code
+        WHERE {where} AND s.market = '主板'
+        ORDER BY ss.score DESC
     """
     df = pd.read_sql(sql, conn, params=params)
     conn.close()
@@ -288,19 +289,21 @@ def query_signals(trade_date=None, code=None, name=None, strategy=None,
         params.append(min_score)
     
     where = " AND ".join(conditions) if conditions else "1=1"
-    
-    # 总数
-    count_sql = f"SELECT COUNT(*) FROM stock_signals WHERE {where}"
+
+    # 总数（JOIN stocks表，只统计主板）
+    count_sql = f"SELECT COUNT(*) FROM stock_signals ss JOIN stocks s ON ss.stock_code = s.stock_code WHERE {where} AND s.market = '主板'"
     total = pd.read_sql(count_sql, conn, params=params).iloc[0, 0]
-    
-    # 分页数据
+
+    # 分页数据（JOIN stocks表，只取主板）
     offset = (page - 1) * size
     data_sql = f"""
-        SELECT trade_date, stock_code, stock_name, price, change_pct, 
-               strategy, reason, score, volume_ratio, turnover_rate,
-               is_limit_up, consecutive_limit_up_days
-        FROM stock_signals WHERE {where}
-        ORDER BY trade_date DESC, score DESC
+        SELECT ss.trade_date, ss.stock_code, ss.stock_name, ss.price, ss.change_pct,
+               ss.strategy, ss.reason, ss.score, ss.volume_ratio, ss.turnover_rate,
+               ss.is_limit_up, ss.consecutive_limit_up_days
+        FROM stock_signals ss
+        JOIN stocks s ON ss.stock_code = s.stock_code
+        WHERE {where} AND s.market = '主板'
+        ORDER BY ss.trade_date DESC, ss.score DESC
         LIMIT %s OFFSET %s
     """
     df = pd.read_sql(data_sql, conn, params=params + [size, offset])
